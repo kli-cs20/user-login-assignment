@@ -18,14 +18,17 @@ let users = loadUsers();
 signUpBtn.addEventListener('click', signUpHandler);
 
 function signUpHandler() {
-  if (checkUsernames(userInput.value)) {
-    alert("Username currently unavailable.");
-    clearInputs();
+  if (checkInputs(userInput.value, pwdInput.value, pwdConfirm.value)) {
+    alert("Fields must not be empty and passwords should match");
   } else {
-    newUser(userInput.value, pwdInput.value);
-    alert("Your account has been successfully created.");
-    saveUsers();
-    clearInputs();
+    if (checkUsernames(userInput.value)) {
+      alert("Username currently unavailable.");
+    } else {
+      newUser(userInput.value, pwdInput.value);
+      alert("Your account has been successfully created.");
+      saveUsers();
+      clearInputs();
+    }
   }
 }
 
@@ -52,6 +55,7 @@ function clearInputs() {
   pwdConfirm.value = "";
 }
 
+// Test whether username is in use
 function checkUsernames(testName) {
   for (let i = 0; i < users.length; i++) {
     if (users[i].username === testName) {
@@ -61,6 +65,7 @@ function checkUsernames(testName) {
   return false;
 }
 
+// Test Correct Username and Password
 function checkSignIn(testName, testPwd) {
   for (let i = 0; i < users.length; i++) {
     let user = users[i];
@@ -70,6 +75,11 @@ function checkSignIn(testName, testPwd) {
     }
   }
   return false;
+}
+
+// Test empty fields and matching password
+function checkInputs(input1, pass1, pass2) {
+  return input1 === "" || pass1 === "" || pass2 === "" || pass1 !== pass2
 }
 
 // Load and Save data on Local Storage
